@@ -8,6 +8,7 @@ import {
   Route
 } from "react-router-dom";
 import Login from './login';
+import BestBooks from './BestBooks';
 import MyFavoriteBooks from './myFavoriteBooks';
 import Profile from './Profile';
 import { withAuth0 } from '@auth0/auth0-react';
@@ -16,12 +17,22 @@ import { withAuth0 } from '@auth0/auth0-react';
 
 class App extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      Books: [],
+      useremail: '',
+      showUserComponent: false,
+      server: process.env.REACT_APP_SERVER_URL,
+    }
+  }
+
   render() {
     // const { isAuthenticated } = this.props.auth0;
     console.log('app', this.props)
     return(
       <>
-                      {console.log(this.props.auth0.isAuthenticated)}
+                      
 
         <Router>
           <IsLoadingAndError>
@@ -31,16 +42,17 @@ class App extends React.Component {
               {/* <Profile />
               <Login /> */}
                 {/* TODO: if the user is logged in, render the `MyFavoriteBooks` component, if they are not, render the `Login` component */}
-                {this.props.auth0.isAuthenticated
+                {this.props.auth0.isAuthenticated 
                   ? <MyFavoriteBooks />
                   : <Login />
                 }
+                {console.log(this.props.auth0.user)}
               </Route>
               <Route exact path="/profile">
                  {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
 
                 {this.props.auth0.isAuthenticated
-                  ? <Profile />
+                  ?  <BestBooks useremail={this.props.auth0.user.email}/>
                   : null
                 }
               </Route>
