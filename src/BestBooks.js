@@ -2,6 +2,7 @@ import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 import {Carousel } from 'react-bootstrap';
+import './BestBooks.css';
 
 class BestBooks extends React.Component {
     constructor(props) {
@@ -42,8 +43,9 @@ class BestBooks extends React.Component {
     render(){
         return(
             <>
-            {this.state.showBooksComponent && 
-                <Carousel>
+            {this.state.showBooksComponent && <div className="bookdiv">
+                <Carousel
+                >
                     { this.state.Books.map((item,idx) =>{
                     return (
                         <Carousel.Item key={idx}>
@@ -52,7 +54,7 @@ class BestBooks extends React.Component {
                         src={item.bookUrl}
                         alt={item.bookName}
                         />
-                        <Carousel.Caption>
+                        <Carousel.Caption > 
                         <h3>{item.bookName}</h3>
                         <p>{item.description}</p>
                         <p>{item.status}</p>
@@ -66,7 +68,7 @@ class BestBooks extends React.Component {
                     );
                 })}
                 </Carousel>    
-               
+                </div>
             }
             </>
         );
