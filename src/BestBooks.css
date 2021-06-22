@@ -1,0 +1,13 @@
+.bookdiv {
+    margin-top: 30px;
+    margin-bottom: 60px;
+    height: 700px;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.bookdiv Carousel.Caption {
+color: black;
+}
