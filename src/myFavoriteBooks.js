@@ -12,10 +12,11 @@ class MyFavoriteBooks extends React.Component {
     this.state= {
       show:false,
       server: process.env.REACT_APP_SERVER_URL,
-      
+      Books: [],
     }
 
   }
+   
   
   handleShow=()=>{
     this.setState({
@@ -32,21 +33,20 @@ handleClose=()=>{
   addBook =async (event) =>{
     event.preventDefault();
 
-  //  let bookname=event.target.bookName.value;
-  //  let bookDescription=event.target.bookDescription.value;
-  //  let bookStatus=event.target.bookStatus.value;
-  //   console.log(bookname);
-  //   console.log(bookDescription);
-  //   console.log(bookStatus);
+
 
   const bookForm ={
       bookname:event.target.bookName.value,
       bookDescription:event.target.bookDescription.value,
       bookStatus:event.target.bookStatus.value,
+      useremail:this.props.useremail,
     }
 
+    console.log(bookForm.useremail); 
     const newbooks= await axios.post(`${this.state.server}/addbooks`,bookForm);
-
+    this.setState({
+      Books:newbooks.data,
+    })
     
     
   }
@@ -97,7 +97,7 @@ handleClose=()=>{
       </Modal>
 
        <br/>
-        <BestBooks useremail={this.props.useremail} />
+        <BestBooks useremail={this.props.useremail} booksarr={this.state.Books}/>
       </Jumbotron>
     )
   }

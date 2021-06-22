@@ -8,9 +8,9 @@ class BestBooks extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          Books: [],
+          Books:[],
         //   useremail: '',
-          showBooksComponent: false,
+          showBooksComponent: true,
           server: process.env.REACT_APP_SERVER_URL,
         }
       }
