@@ -1,7 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import {Carousel } from 'react-bootstrap';
+import { Card,Button } from 'react-bootstrap';
 import './BestBooks.css';
 
 class BestBooks extends React.Component {
@@ -35,39 +35,30 @@ class BestBooks extends React.Component {
           }
       };
 
-    //    function componentDidMount (){ 
-    //     getBooks();
-    //    };
-    //    componentDidMount();
-    
+ 
     render(){
         return(
             <>
             {this.state.showBooksComponent && <div className="bookdiv">
-                <Carousel
-                >
+               
                     { this.state.Books.map((item,idx) =>{
                     return (
-                        <Carousel.Item key={idx}>
-                        <img
-                        className="d-block w-100"
-                        src={item.bookUrl}
-                        alt={item.bookName}
-                        />
-                        <Carousel.Caption > 
-                        <h3>{item.bookName}</h3>
-                        <p>{item.description}</p>
-                        <p>{item.status}</p>
-                        </Carousel.Caption>
-                         </Carousel.Item>
-                        // <div key={idx}>
-                        //     <p>{item.bookName}</p>
-                        //     <p>{item.description}</p>
-                        //     <p>{item.status}</p>
-                        // </div>
+                      <Card style={{ width: '18rem' }} key={idx} >
+                      <Card.Body>
+                        <Card.Title>{item.bookName}</Card.Title>
+                        <Card.Text>
+                        {item.description}
+                        </Card.Text>
+                        <Card.Text>
+                        {item.status}
+                        </Card.Text>
+                        <Button variant="primary">Delete</Button>
+                      </Card.Body>
+                     </Card>
+                       
                     );
                 })}
-                </Carousel>    
+              
                 </div>
             }
             </>
