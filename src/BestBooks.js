@@ -1,74 +1,48 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
-import {Carousel } from 'react-bootstrap';
+import { Card,Button,Container ,Row } from 'react-bootstrap';
 import './BestBooks.css';
 
 class BestBooks extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          Books: [],
         //   useremail: '',
-          showBooksComponent: false,
+          showBooksComponent: true,
           server: process.env.REACT_APP_SERVER_URL,
         }
       }
       
-      componentDidMount() {
-        this.getBooks();
-      }
-    
-      getBooks = async ()=>{
-          console.log(this.props.useremail);
-          try {
-            const  pObj ={
-                useremail: this.props.useremail
-            }
-            const books= await axios.get(`${this.state.server}/books`,{params:pObj});
-            this.setState({
-                Books: books.data,
-                showBooksComponent: true,
-            });
-          }catch (error) {
-            console.log(error);
-          }
-      };
+      
 
-    //    function componentDidMount (){ 
-    //     getBooks();
-    //    };
-    //    componentDidMount();
-    
+ 
     render(){
         return(
             <>
-            {this.state.showBooksComponent && <div className="bookdiv">
-                <Carousel
-                >
-                    { this.state.Books.map((item,idx) =>{
+            {this.state.showBooksComponent && <Container>
+
+              <Row xs={2} md={4} lg={6}>
+                    { this.props.booksarr.map((item,idx) =>{
                     return (
-                        <Carousel.Item key={idx}>
-                        <img
-                        className="d-block w-100"
-                        src={item.bookUrl}
-                        alt={item.bookName}
-                        />
-                        <Carousel.Caption > 
-                        <h3>{item.bookName}</h3>
-                        <p>{item.description}</p>
-                        <p>{item.status}</p>
-                        </Carousel.Caption>
-                         </Carousel.Item>
-                        // <div key={idx}>
-                        //     <p>{item.bookName}</p>
-                        //     <p>{item.description}</p>
-                        //     <p>{item.status}</p>
-                        // </div>
+                      <Card style={{ width: '18rem' }} key={idx} >
+                      <Card.Body>
+                        <Card.Title>{item.bookName}</Card.Title>
+                        <Card.Text>
+                        {item.description}
+                        </Card.Text>
+                        <Card.Footer>
+                        <small className="text-muted">{item.status}</small>
+                        </Card.Footer><br/>
+                        <Button variant="primary" onClick={()=>this.props.deletebook(idx)}>Delete</Button>
+                      </Card.Body>
+                     </Card>
+                       
                     );
                 })}
-                </Carousel>    
-                </div>
+              </Row>
+              </Container>
+
             }
             </>
         );

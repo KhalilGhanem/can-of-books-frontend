@@ -1,3 +1,11 @@
 .jumbotron{
   margin-bottom: 0;
 }
+
+.BestBooks {
+  display: inline-block;
+}
+
+.bookStatus {
+  width: 100%;
+}

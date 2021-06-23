@@ -29,7 +29,7 @@ class App extends React.Component {
 
   render() {
     // const { isAuthenticated } = this.props.auth0;
-    console.log('app', this.props)
+    // console.log('app', this.props)
     return(
       <>
                       
@@ -43,16 +43,16 @@ class App extends React.Component {
               <Login /> */}
                 {/* TODO: if the user is logged in, render the `MyFavoriteBooks` component, if they are not, render the `Login` component */}
                 {this.props.auth0.isAuthenticated 
-                  ? <MyFavoriteBooks />
+                  ? <MyFavoriteBooks useremail={this.props.auth0.user.email} />
                   : <Login />
                 }
-                {console.log(this.props.auth0.user)}
+                {/* {console.log(this.props.auth0.user)} */}
               </Route>
               <Route exact path="/profile">
                  {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
 
                 {this.props.auth0.isAuthenticated
-                  ?  <BestBooks useremail={this.props.auth0.user.email}/>
+                  ?  <Profile />
                   : null
                 }
               </Route>
