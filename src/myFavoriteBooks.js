@@ -3,8 +3,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import './myFavoriteBooks.css';
 import BestBooks from './BestBooks';
-import { Modal,Form,Button } from 'react-bootstrap';
+import BookFormModal from './BookFormModal';
 import axios from 'axios';
+import { Button } from 'react-bootstrap';
 
 class MyFavoriteBooks extends React.Component {
   constructor (props){
@@ -17,14 +18,34 @@ class MyFavoriteBooks extends React.Component {
 
   }
    
-  
+  componentDidMount() {
+    this.getBooks();
+  }
+
+  getBooks = async ()=>{
+      console.log(this.props.useremail);
+      try {
+        const  pObj ={
+            useremail: this.props.useremail
+        }
+        const books= await axios.get(`${this.state.server}/books`,{params:pObj});
+        console.log(books.data);
+        this.setState({
+            Books: books.data,
+            showBooksComponent: true,
+        });
+      }catch (error) {
+        console.log(error);
+      }
+  };
+
   handleShow=()=>{
     this.setState({
         show:true
     })
     
-}
-handleClose=()=>{
+ }
+ handleClose=()=>{
       this.setState({
           show:false
       })
@@ -33,74 +54,60 @@ handleClose=()=>{
   addBook =async (event) =>{
     event.preventDefault();
 
-
-
-  const bookForm ={
+   const bookForm ={
       bookname:event.target.bookName.value,
       bookDescription:event.target.bookDescription.value,
       bookStatus:event.target.bookStatus.value,
       useremail:this.props.useremail,
     }
-
-    console.log(bookForm.useremail); 
+    try {
+    console.log('test from add.');
+    // console.log(bookForm.useremail); 
     const newbooks= await axios.post(`${this.state.server}/addbooks`,bookForm);
+    console.log(newbooks);
     this.setState({
       Books:newbooks.data,
     })
+    }catch (error) {
+      console.log(error);
+    }
     
-    
-  }
+   }
+
+   deletebook =async (idx) =>{
+     const userE={
+      useremail:this.props.useremail,
+     }
+     try {
+      let dbook =await axios.delete(`${this.state.server}/deletebooks/${idx}`,{params:userE});
+      this.setState({
+        Books:dbook.data,
+      })
+    // console.log('hi from delete'+idx);
+     }catch (error) {
+      console.log(error);
+    }
+   }
   
-  render() {
+   render() {
     return(
       
       <Jumbotron>
         <h1>My Favorite Books</h1>
-        
-      <Button variant="primary" onClick={this.handleShow}>
+        <Button variant="primary" onClick={this.handleShow}>
         Add a Book
       </Button>
-
-      <Modal show={this.state.show} onHide={this.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add a Book</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Form id="my-form" onSubmit={this.addBook}>
-          <Form.Group className="mb-3" >
-            <Form.Label>Book name</Form.Label>
-            <Form.Control type="text" name="bookName" required />
-          </Form.Group>
-          <Form.Group className="mb-3" >
-            <Form.Label>Book Description</Form.Label>
-            <Form.Control type="text" name="bookDescription"/>
-          </Form.Group>
-          <Form.Group className="mb-3" >
-          <Form.Label>Status</Form.Label><br/>
-          <Form.Control as="select"  className='bookStatus' required  name="bookStatus">
-            <option value=''> </option>
-            <option value='favorite'>favorite</option>
-            <option value='Top rated'>Top rated</option>
-             <option value='Life Changing'>Life Changing</option>
-             </Form.Control>
-          </Form.Group>
-        </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.handleClose}>
-            Close
-          </Button>
-          <Button type="submit" form="my-form" onClick={this.handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
+        <BookFormModal 
+        handleShow={this.handleShow} 
+        handleClose={this.handleClose}
+        addBook={this.addBook}
+        show={this.state.show}
+        />
        <br/>
-        <BestBooks useremail={this.props.useremail} booksarr={this.state.Books}/>
+        <BestBooks useremail={this.props.useremail} booksarr={this.state.Books} deletebook={this.deletebook}/>
       </Jumbotron>
     )
-  }
+    }
 }
 
 export default MyFavoriteBooks;
