@@ -88,6 +88,9 @@ class MyFavoriteBooks extends React.Component {
       console.log(error);
     }
    }
+   updateBook =async (idx) =>{
+     console.log('hello from update'+idx);
+   }
   
    render() {
     return(
@@ -102,9 +105,10 @@ class MyFavoriteBooks extends React.Component {
         handleClose={this.handleClose}
         addBook={this.addBook}
         show={this.state.show}
+        
         />
        <br/>
-        <BestBooks useremail={this.props.useremail} booksarr={this.state.Books} deletebook={this.deletebook}/>
+        <BestBooks useremail={this.props.useremail} booksarr={this.state.Books} deletebook={this.deletebook} updateBook={this.updateBook}/>
       </Jumbotron>
     )
     }
