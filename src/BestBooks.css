@@ -15,3 +15,7 @@ color: black;
 Card {
     display: inline-block;
 }
+
+Button {
+    margin-left: 10px;
+}

@@ -4,19 +4,17 @@ import axios from 'axios';
 import { Card,Button,Container ,Row } from 'react-bootstrap';
 import './BestBooks.css';
 
+
 class BestBooks extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-        //   useremail: '',
           showBooksComponent: true,
           server: process.env.REACT_APP_SERVER_URL,
+          updateBook:this.props.updateBook,
         }
       }
-      
-      
 
- 
     render(){
         return(
             <>
@@ -35,6 +33,7 @@ class BestBooks extends React.Component {
                         <small className="text-muted">{item.status}</small>
                         </Card.Footer><br/>
                         <Button variant="primary" onClick={()=>this.props.deletebook(idx)}>Delete</Button>
+                        <Button variant="primary" onClick={()=>this.props.handleFormShow(idx)} >Update</Button>
                       </Card.Body>
                      </Card>
                        
@@ -42,8 +41,8 @@ class BestBooks extends React.Component {
                 })}
               </Row>
               </Container>
-
             }
+           
             </>
         );
     } 
