@@ -4,6 +4,7 @@ import Jumbotron from 'react-bootstrap/Jumbotron';
 import './myFavoriteBooks.css';
 import BestBooks from './BestBooks';
 import BookFormModal from './BookFormModal';
+import UpdateBookForm from './updateBookForm';
 import axios from 'axios';
 import { Button } from 'react-bootstrap';
 
@@ -12,8 +13,13 @@ class MyFavoriteBooks extends React.Component {
     super (props);
     this.state= {
       show:false,
+      showForm:false,
       server: process.env.REACT_APP_SERVER_URL,
       Books: [],
+      BookIdx: 0,
+      Bname:'',
+      Bdesc:'',
+      Bstat:'',
     }
 
   }
@@ -50,6 +56,22 @@ class MyFavoriteBooks extends React.Component {
           show:false
       })
   }
+  handleFormShow=(BookIdx)=>{
+    this.setState({
+        showForm:true,
+        BookIdx:BookIdx,
+        Bname:this.state.Books[BookIdx].bookName,
+        Bdesc:this.state.Books[BookIdx].description,
+        Bstat:this.state.Books[BookIdx].status,
+    })
+    
+ }
+ handleFormClose=()=>{
+      this.setState({
+          showForm:false
+      })
+  }
+  
 
   addBook =async (event) =>{
     event.preventDefault();
@@ -88,8 +110,25 @@ class MyFavoriteBooks extends React.Component {
       console.log(error);
     }
    }
-   updateBook =async (idx) =>{
-     console.log('hello from update'+idx);
+   updateBook =async (event) =>{
+    event.preventDefault();
+     console.log('hello from update');
+    const bData ={
+      bookname:event.target.bookName.value,
+      bookDescription:event.target.bookDescription.value,
+      bookStatus:event.target.bookStatus.value,
+      useremail:this.props.useremail,
+    }
+    try {
+      let ubook= await axios.put(`${this.state.server}/updatebooks/${this.state.BookIdx}`,bData);
+      this.setState({
+        Books:ubook.data,
+      })
+
+    }catch(error){
+      console.log(error);
+    }
+     
    }
   
    render() {
@@ -108,7 +147,15 @@ class MyFavoriteBooks extends React.Component {
         
         />
        <br/>
-        <BestBooks useremail={this.props.useremail} booksarr={this.state.Books} deletebook={this.deletebook} updateBook={this.updateBook}/>
+        <BestBooks useremail={this.props.useremail} booksarr={this.state.Books} deletebook={this.deletebook} handleFormShow={this.handleFormShow}/>
+        <UpdateBookForm 
+         show={this.state.showForm}
+         handleClose={this.handleFormClose}
+         updateBook={this.updateBook}
+         Bname={this.state.Bname}
+         Bdesc={this.state.Bdesc}
+         Bstat={this.state.Bstat}
+        />
       </Jumbotron>
     )
     }

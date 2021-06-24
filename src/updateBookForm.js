@@ -8,24 +8,24 @@ class UpdateBookForm extends React.Component {
     
     render(){
         return(
-            <> {console.log(this.props.cardidx)}
+            <> 
              <Modal show={this.props.show} onHide={this.props.handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>update Book</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <Form id="update-form" onSubmit={()=>this.props.updateBook(this.props.cardidx)}>
+        <Form id="update-form" onSubmit={this.props.updateBook}>
           <Form.Group className="mb-3" >
             <Form.Label>Book name</Form.Label>
-            <Form.Control type="text" name="bookName" required />
+            <Form.Control type="text" name="bookName" required defaultValue={this.props.Bname}/>
           </Form.Group>
           <Form.Group className="mb-3" >
             <Form.Label>Book Description</Form.Label>
-            <Form.Control type="text" name="bookDescription"/>
+            <Form.Control type="text" name="bookDescription" defaultValue={this.props.Bdesc}/>
           </Form.Group>
           <Form.Group className="mb-3" >
           <Form.Label>Status</Form.Label><br/>
-          <Form.Control as="select"  className='bookStatus' required  name="bookStatus">
+          <Form.Control as="select"  className='bookStatus' defaultValue={this.props.Bstat}  name="bookStatus">
             <option value='favorite'>favorite</option>
             <option value='Top rated'>Top rated</option>
              <option value='Life Changing'>Life Changing</option>
